@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PhoneBook.Model
@@ -34,9 +35,9 @@ namespace PhoneBook.Model
                 {
                     throw new ArgumentException("Телефон не может быть пустым");
                 }
-                if (value.Length < 10 || value.Length > 12)
+                if (!Regex.IsMatch(value, @"^(\+?7|8)\d{10}$"))
                 {
-                    throw new ArgumentException("Неверная длина телефонного номера");
+                    throw new ArgumentException("Неверный формат номера телефона");
                 }
                 phoneNumber = value;
             }

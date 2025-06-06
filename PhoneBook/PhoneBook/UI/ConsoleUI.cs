@@ -1,9 +1,5 @@
 ﻿using PhoneBook.Service;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhoneBook.UI
 {
@@ -16,16 +12,17 @@ namespace PhoneBook.UI
             "5)Найти контакт по номеру телефона\n" +
             "6)Найти контакт по имени абонента\n" +
             "7)Выход";
-        private readonly PhoneBookService phoneBookService;
+        private readonly IPhoneBookService phoneBookService;
 
         public ConsoleUI()
         {
-            phoneBookService = new PhoneBookServiceImpl();
+            phoneBookService = PhoneBookService.Instance;
         }
 
         public void Start()
         {
-            while (true)
+            bool isRunning = true;
+            while (isRunning)
             {
                 Console.WriteLine(MENU);
                 Console.Write("Введите пункт меню: ");
@@ -54,7 +51,8 @@ namespace PhoneBook.UI
                             UserOutput.PrintAbonentInfo(phoneBookService.GetAbonentByName(UserInput.GetName()));
                             break;
                         case '7':
-                            phoneBookService.Exit();
+                            phoneBookService.SaveBeforeExit();
+                            isRunning = false;
                             break;
                         default:
                             Console.WriteLine("Такого пункта нет в меню!");
@@ -62,7 +60,8 @@ namespace PhoneBook.UI
                     }
                 }
                 catch (Exception ex) { Console.WriteLine(ex.Message); }
-                WaitAndClearConsole();
+                if(userInput != '7')
+                    WaitAndClearConsole();
             }
         }
 
