@@ -1,4 +1,5 @@
-﻿using PhoneBook.Service;
+﻿using PhoneBook.Model;
+using PhoneBook.Service;
 using System;
 
 namespace PhoneBook.UI
@@ -48,7 +49,11 @@ namespace PhoneBook.UI
                             UserOutput.PrintAbonentInfo(phoneBookService.GetAbonentByPhoneNumber(UserInput.GetPhoneNumber()));
                             break;
                         case '6':
-                            UserOutput.PrintAbonentInfo(phoneBookService.GetAbonentByName(UserInput.GetName()));
+                            string name = UserInput.GetName();
+                            foreach(Abonent abonent in phoneBookService.GetAbonentByName(name))
+                            {
+                                UserOutput.PrintAbonentInfo(abonent);
+                            }
                             break;
                         case '7':
                             phoneBookService.SaveBeforeExit();
