@@ -1,11 +1,12 @@
 ﻿using PhoneBook.Model;
+using System.Collections.Generic;
 
 namespace PhoneBook.Service
 {
     public interface IPhoneBookService
     {
         static abstract IPhoneBookService Instance { get; }
-        Abonent GetAbonentByName(string name);
+        List<Abonent> GetAbonentByName(string name);
         Abonent GetAbonentByPhoneNumber(string phoneNumber);
         void DeleteAbonent(string phoneNumber);
         Abonent AddNewContactToPhoneBook(string name, string phoneNumber);

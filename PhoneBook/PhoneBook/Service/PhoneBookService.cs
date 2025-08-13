@@ -2,6 +2,7 @@
 using PhoneBook.Model;
 using PhoneBook.Storage;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PhoneBook.Service
@@ -37,14 +38,14 @@ namespace PhoneBook.Service
             return _phoneBook.abonentsDictionary[phoneNumber];
         }
 
-        public Abonent GetAbonentByName(string name)
+        public List<Abonent> GetAbonentByName(string name)
         {
-            Abonent abonent = _phoneBook.abonentsDictionary.Where(ab => ab.Value.Name.Equals(name)).FirstOrDefault().Value;
-            if (abonent == null)
+            List<Abonent> abonents = _phoneBook.abonentsDictionary.Where(ab => ab.Value.Name.Equals(name)).Select(ab => ab.Value).ToList();
+            if (abonents.Count == 0)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Абоненты с именем {name} не найдены");
             }
-            return abonent;
+            return abonents;
         }
 
         public void DeleteAbonent(string phoneNumber)
@@ -58,7 +59,7 @@ namespace PhoneBook.Service
 
         public Abonent AddNewContactToPhoneBook(string name, string phoneNumber)
         {
-            if (_phoneBook.abonentsDictionary.ContainsKey(name))
+            if (_phoneBook.abonentsDictionary.ContainsKey(phoneNumber))
             {
                 throw new AlreadyExistException($"Контакт с номером телефона {phoneNumber} уже существует");
             }
